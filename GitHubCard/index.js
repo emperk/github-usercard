@@ -1,3 +1,19 @@
+import axios from 'axios';
+console.log('AXIOS --> \n \n', axios);
+// const result = axios.get(https://api.github.com/users/emperk);
+//console.log(result);
+const cardEntry = document.querySelector('.cards');
+axios
+.get('https://api.github.com/users/emperk')
+.then(res => {
+  console.log(res);
+  const card = cardMaker(res.data);
+  cardEntry.appendChild(card);
+})
+.catch((drama) => {
+  console.log(drama);
+});
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
@@ -49,6 +65,55 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker (obj) {
+  const cardDiv = document.createElement('div');
+  cardDiv.classList.add('card');
+
+  const userImg = document.createElement('img');
+  userImg.src = obj.avatar_url;
+
+  const infoDiv = document.createElement('div');
+  infoDiv.classList.add('card-info');
+
+  const h3 = document.createElement('h3');
+  h3.classList.add('card-info');
+  h3.innerText = obj.name;
+
+  const p1 = document.createElement('p');
+  p1.classList.add('username');
+  p1.innerText = obj.login;
+
+  const p2 = document.createElement('p');
+  p2.innerText = ('Location:' + obj.location);
+
+  const p3 = document.createElement('p');
+  p3.innerText = ('Profile:');
+
+  const aTag = document.createElement('a');
+  aTag.innerText = ('Github Profile');
+  aTag.setAttribute('href', obj.html_url);
+
+  const p4 = document.createElement('p');
+  p4.innerText = ('Following: ' + obj.following);
+
+  const p5 = document.createElement('p');
+  p5.innerText = ('Bio: ' + obj.bio);
+
+  cardDiv.appendChild(userImg);
+  cardDiv.appendChild(infoDiv);
+  infoDiv.appendChild(h3);
+  infoDiv.appendChild(p1);
+  infoDiv.appendChild(p2);
+  infoDiv.appendChild(p3);
+  infoDiv.appendChild(p4);
+  infoDiv.appendChild(p5);
+  infoDiv.appendChild(p6);
+  p3.appendChild(aTag);
+
+  return cardDiv
+
+};
 
 /*
   List of LS Instructors Github username's:

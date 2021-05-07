@@ -5,9 +5,18 @@
 */
 
 import axios from "axios";
+console.log('check out axios: \n \n', axios);
 const cardEntry = document.querySelector('.cards');
 axios
-  .get('https://api.github.com/users/emperk')
+.get('https://api.github.com/users/emperk')
+.then(res => {
+  console.log(res);
+  const card = cardMaker(res.data);
+  cardEntry.appendChild(card);
+})
+.catch((drama) => {
+  console.log(drama);
+});
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -22,6 +31,7 @@ axios
     and append the returned markup to the DOM as a child of .cards
 */
 
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -33,7 +43,20 @@ axios
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell", "markperk"];
+
+followersArray.forEach(follower => {
+  axios
+    .get(`https://api.github.com/users/${follower}`)
+    .then(response => {
+      console.log(response);
+      const card = cardMaker(response.data);
+      cardEntry.appendChild(card);
+    })
+    .catch(error => {
+      console.log("Error is here: ", error);
+    })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -55,49 +78,94 @@ const followersArray = [];
     </div>
 */
 
-function cardMaker({obj}) {
-  const mainCard = document.createElement("div");
-  const userImg = document.createElement("img");
-  const cardInfoDiv = document.createElement("div");
-  const usersNameTitle = document.createElement("h3");
-  const userNameText = document.createElement("p");
-  const locationText = document.createElement("p");
-  const profileText = document.createElement("p");
-  const userAddressText = document.createElement("a");
-  const followersText = document.createElement("p");
-  const followingText = document.createElement("p");
-  const bioText = document.createElement("p");
+// function cardMaker({obj}) {
+//   const mainCard = document.createElement("div");
+//   const userImg = document.createElement("img");
+//   const cardInfoDiv = document.createElement("div");
+//   const usersNameTitle = document.createElement("h3");
+//   const userNameText = document.createElement("p");
+//   const locationText = document.createElement("p");
+//   const profileText = document.createElement("p");
+//   const userAddressText = document.createElement("a");
+//   const followersText = document.createElement("p");
+//   const followingText = document.createElement("p");
+//   const bioText = document.createElement("p");
+
+//   userImg.src = obj.avatar_url;
+//   userAddressText.setAttribute('href', obj.html_url);
+  
+//   mainCard.classList.add("card");
+//   cardInfoDiv.classList.add("card-info");
+//   usersNameTitle.classList.add("name");
+//   userNameText.classList.add("username");
+  
+//   usersNameTitle.innerText = obj.name;
+//   userNameText.innerText = obj.login;
+//   location.innerText = ('Location: ' + obj.location);
+//   profileText.innerText = ('Profile: ');
+//   userAddressText.innerText = 'GitHub Profile';
+//   followersText.innerText = ('Followers: ' + obj.followers);
+//   followingText.innerText = ('Following: ' + obj.following);
+//   bioText.innerText = ('Bio' + obj.bio);
+  
+//   mainCard.appendChild(userImg);
+//   mainCard.appendChild(cardInfoDiv);
+//   cardInfoDiv.appendChild(usersNameTitle);
+//   cardInfoDiv.appendChild(userNameText);
+//   cardInfoDiv.appendChild(locationText);
+//   cardInfoDiv.appendChild(profileText);
+//   profileText.appendChild(userAddressText);
+//   cardInfoDiv.appendChild(followersText);
+//   cardInfoDiv.appendChild(followingText);
+//   cardInfoDiv.appendChild(bioText);
+
+//   return mainCard;
+  
+
+// }
+
+function cardMaker (obj) {
+  const mainCard = document.createElement('div');
+  const userImg = document.createElement('img');
+  const infoDiv = document.createElement('div');
+  const usersNameTitle = document.createElement('h3');
+  const userNameText = document.createElement('p');
+  const locationText = document.createElement('p');
+  const profileText = document.createElement('p');
+  const userAddress = document.createElement('a');
+  const followingText = document.createElement('p');
+  const followersText = document.createElement('p');
+  const bioText = document.createElement('p');
 
   userImg.src = obj.avatar_url;
-  userAddressText.setAttribute('href', obj.html_url);
+  userAddress.setAttribute('href', obj.html_url);  
+  
+  mainCard.classList.add('card');  
+  infoDiv.classList.add('card-info');  
+  usersNameTitle.classList.add('name');
+  userNameText.classList.add('username');
+
+  usersNameTitle.innerText = obj.name;  
+  userNameText.innerText = obj.login;
+  locationText.innerText = ('Location: ' + obj.location);  
+  profileText.innerText = ('Profile: ');  
+  userAddress.innerText = ('Github Profile');
+  followingText.innerText = ('Following: ' + obj.following);
+  followersText.innerText = ('Followers: ' + obj.followers);
+  bioText.innerText = ('Bio: ' + obj.bio);
 
   mainCard.appendChild(userImg);
-  mainCard.appendChild(cardInfoDiv);
-  cardInfoDiv.appendChild(usersNameTitle);
-  cardInfoDiv.appendChild(userNameText);
-  cardInfoDiv.appendChild(locationText);
-  cardInfoDiv.appendChild(profileText);
-  cardInfoDiv.appendChild(userAddressText);
-  cardInfoDiv.appendChild(followersText);
-  cardInfoDiv.appendChild(followingText);
-  cardInfoDiv.appendChild(bioText);
+  mainCard.appendChild(infoDiv);
+  infoDiv.appendChild(usersNameTitle);
+  infoDiv.appendChild(userNameText);
+  infoDiv.appendChild(locationText);
+  infoDiv.appendChild(profileText);
+  infoDiv.appendChild(followingText);
+  infoDiv.appendChild(followersText);
+  infoDiv.appendChild(bioText);
+  profileText.appendChild(userAddress);
 
-  mainCard.classList.add("card");
-  cardInfoDiv.classList.add("card-info");
-  usersNameTitle.classList.add("name");
-  userNameText.classList.add("username");
-
-  usersNameTitle.innerText = obj.name;
-  userNameText.innerText = obj.login;
-  location.innerText = ('Location: ' + obj.location);
-  profileText.innerText = ('Profile: ');
-  userAddressText.innerText = 'GitHub Profile';
-  followersText.innerText = ('Followers: ' + obj.followers);
-  followingText.innerText = ('Following: ' + obj.following);
-  bioText.innerText = ('Bio' + obj.bio);
-
-  return mainCard;
-  
+  return mainCard
 
 }
 

@@ -4,6 +4,11 @@
     https://api.github.com/users/<your name>
 */
 
+import axios from "axios";
+const cardEntry = document.querySelector('.cards');
+axios
+  .get('https://api.github.com/users/emperk')
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -34,21 +39,68 @@ const followersArray = [];
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
 
-    <div class="card">
-      <img src={image url of user} />
-      <div class="card-info">
-        <h3 class="name">{users name}</h3>
-        <p class="username">{users user name}</p>
-        <p>Location: {users location}</p>
-        <p>Profile:
-          <a href={address to users github page}>{address to users github page}</a>
+    <div class="card">                                                                  //mainCard
+      <img src={image url of user} />                                                     //mainImg
+      <div class="card-info">                                                             //cardInfoDiv
+        <h3 class="name">{users name}</h3>                                                  //usersNameTitle
+        <p class="username">{users user name}</p>                                           //userNameText
+        <p>Location: {users location}</p>                                                   //locationText
+        <p>Profile:                                                                         //profileText
+          <a href={address to users github page}>{address to users github page}</a>           //userAddressText
         </p>
-        <p>Followers: {users followers count}</p>
-        <p>Following: {users following count}</p>
-        <p>Bio: {users bio}</p>
+        <p>Followers: {users followers count}</p>                                           //followersText
+        <p>Following: {users following count}</p>                                           //followingText
+        <p>Bio: {users bio}</p>                                                             //bioText
       </div>
     </div>
 */
+
+function cardMaker({obj}) {
+  const mainCard = document.createElement("div");
+  const userImg = document.createElement("img");
+  const cardInfoDiv = document.createElement("div");
+  const usersNameTitle = document.createElement("h3");
+  const userNameText = document.createElement("p");
+  const locationText = document.createElement("p");
+  const profileText = document.createElement("p");
+  const userAddressText = document.createElement("a");
+  const followersText = document.createElement("p");
+  const followingText = document.createElement("p");
+  const bioText = document.createElement("p");
+
+  userImg.src = obj.avatar_url;
+  userAddressText.setAttribute('href', obj.html_url);
+
+  mainCard.appendChild(userImg);
+  mainCard.appendChild(cardInfoDiv);
+  cardInfoDiv.appendChild(usersNameTitle);
+  cardInfoDiv.appendChild(userNameText);
+  cardInfoDiv.appendChild(locationText);
+  cardInfoDiv.appendChild(profileText);
+  cardInfoDiv.appendChild(userAddressText);
+  cardInfoDiv.appendChild(followersText);
+  cardInfoDiv.appendChild(followingText);
+  cardInfoDiv.appendChild(bioText);
+
+  mainCard.classList.add("card");
+  cardInfoDiv.classList.add("card-info");
+  usersNameTitle.classList.add("name");
+  userNameText.classList.add("username");
+
+  usersNameTitle.innerText = obj.name;
+  userNameText.innerText = obj.login;
+  location.innerText = ('Location: ' + obj.location);
+  profileText.innerText = ('Profile: ');
+  userAddressText.innerText = 'GitHub Profile';
+  followersText.innerText = ('Followers: ' + obj.followers);
+  followingText.innerText = ('Following: ' + obj.following);
+  bioText.innerText = ('Bio' + obj.bio);
+
+  return mainCard;
+  
+
+}
+
 
 /*
   List of LS Instructors Github username's:
